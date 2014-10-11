@@ -206,4 +206,12 @@ var JointController = function ($scope) {
       name: 'satisfactions'
     },
   ];
+
+  $scope.clean = function() {
+      $scope.series = [{
+          name: 'empty..',
+          data: [{x: 0, y: 0}]
+      }];
+  };
+
 };
