@@ -3,3 +3,22 @@ body {
   padding: 10px;
   background-color: #ECF0F1;
 }
+
+
+div, span, p, td {
+	font-family: Arial, sans-serif;
+}
+#chart {
+	display: inline-block;
+}
+#legend {
+	display: inline-block;
+	position: relative;
+	left: 8px;
+}
+#legend_container {
+	position: absolute;
+	right: 20%;
+	bottom: 26px;
+	width: 0;
+}

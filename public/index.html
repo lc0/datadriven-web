@@ -8,6 +8,9 @@
   <link href="lib/bootstrap-css/css/bootstrap.css" rel="stylesheet">
   <link href="lib/jquery-ui/themes/smoothness/jquery-ui.css" rel="stylesheet"/>
   <link href="css/app.css" rel="stylesheet">
+  <link href="css/graph.css" rel="stylesheet">
+  <link href="css/detail.css" rel="stylesheet">
+  <link href="css/legend.css" rel="stylesheet">
 </head>
 <body>
  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -25,14 +28,27 @@
      <!-- Collect the nav links, forms, and other content for toggling -->
      <div class="collapse navbar-collapse navbar-ex1-collapse">
        <ul class="nav navbar-nav">
-         
+
        </ul>
      </div>
      <!-- /.navbar-collapse -->
    </div>
    <!-- /.container -->
   </nav>
-  <div class="container" ng-view></div>
+  <div class="container" ng-view>
+
+
+  </div>
+   <div class="container" id="chart_container">
+        <div id="chart"></div>
+        <div id="legend_container">
+          <div id="smoother" title="Smoothing"></div>
+          <div id="legend"></div>
+        </div>
+        <div id="slider"></div>
+      </div>
+
+
   <script src="lib/jquery/dist/jquery.js"></script>
   <script src="lib/jquery-ui/jquery-ui.js"></script>
   <script src="lib/lodash/dist/lodash.js"></script>
@@ -41,9 +57,74 @@
   <script src="lib/angular-route/angular-route.js"></script>
   <script src="lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
   <script src="lib/angular-ui-date/src/date.js"></script>
+  <script src="lib/underscore/underscore.js"></script>
+  <script src="lib/rickshaw/vendor/d3.v3.js"></script>
+  <script src="lib/rickshaw/rickshaw.js"></script>
 
   <script src="js/app.js"></script>
   <script src="js/home/home-controller.js"></script>
-  
+
+
+
+<script>
+
+// set up our data series with 50 random data points
+
+var seriesData = [ [], [], [] ];
+var random = new Rickshaw.Fixtures.RandomData(150);
+
+for (var i = 0; i < 150; i++) {
+  random.addData(seriesData);
+}
+
+// instantiate our graph!
+
+var graph = new Rickshaw.Graph( {
+  element: document.getElementById("chart"),
+  width: 960,
+  height: 500,
+  renderer: 'line',
+  series: [
+    {
+      color: "#c05020",
+      data: seriesData[0],
+      name: 'New York'
+    }, {
+      color: "#30c020",
+      data: seriesData[1],
+      name: 'London'
+    }, {
+      color: "#6060c0",
+      data: seriesData[2],
+      name: 'Tokyo'
+    }
+  ]
+} );
+
+graph.render();
+
+var hoverDetail = new Rickshaw.Graph.HoverDetail( {
+  graph: graph
+} );
+
+var legend = new Rickshaw.Graph.Legend( {
+  graph: graph,
+  element: document.getElementById('legend')
+
+} );
+
+var shelving = new Rickshaw.Graph.Behavior.Series.Toggle( {
+  graph: graph,
+  legend: legend
+} );
+
+var axes = new Rickshaw.Graph.Axis.Time( {
+  graph: graph
+} );
+axes.render();
+
+</script>
+
+
 </body>
 </html>
