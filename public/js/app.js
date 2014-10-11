@@ -1,11 +1,14 @@
 'use strict';
 // Declare app level module which depends on filters, and services
-angular.module('datadriven', ['ngResource', 'ngRoute', 'ui.bootstrap', 'ui.date', 'ngFacebook'])
+angular.module('datadriven', ['ngResource', 'ngRoute', 'ui.bootstrap', 'ui.date', 'ngFacebook', 'angular-rickshaw'])
   .config(function ($facebookProvider) {
     $facebookProvider.setAppId('300970376756350');
   })
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
+      .when('/fb/:type', {
+        templateUrl: 'views/home/github.html',
+        controller: 'GithubController'})
       .when('/fb/:type', {
         templateUrl: 'views/home/fb.html',
         controller: 'FbController'})
@@ -60,6 +63,31 @@ var DemoCtrl = function ($scope, $facebook, $document) {
 };
 
 var FbController = function ($scope, $facebook, $document) {
+  $scope.options = {
+      renderer: 'line'
+  };
+  $scope.features = {
+      palette: 'colorwheel',
+      legend: {
+          toggle: true,
+          highlight: true
+      },
+      hover: {
+          yFormatter: function(y) {
+              return y;
+          }
+      }
+  };
+  $scope.series = [{
+          name: 'facebook data stream 1',
+          data: [{x: 0, y: 230}, {x: 1, y: 1500}, {x: 2, y: 790}, {x: 3, y: 310}, {x: 4, y: 600}]
+      },
+      {
+          name: 'facebook data stream 2',
+          data: [{x: 0, y: 300}, {x: 1, y: 2000}, {x: 2, y: 640}, {x: 3, y: 500}, {x: 4, y: 150}]
+      }
+      ];
+
   $scope.isLoggedIn = false;
   $scope.login = function() {
     $facebook.login().then(function() {
@@ -79,5 +107,21 @@ var FbController = function ($scope, $facebook, $document) {
   }
 
   //refresh();
-  console.log('whaaazaaaap');
+};
+
+var GithubController = function ($scope) {
+  $scope.options = {
+      renderer: 'line'
+  };
+  $scope.features = {
+      palette: 'colorwheel',
+      legend: {
+          toggle: true,
+          highlight: true
+      }
+  };
+  $scope.series = [{
+          name: 'Github data',
+          data: Githubdata
+      }];
 };
