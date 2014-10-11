@@ -3,6 +3,7 @@
 angular.module('datadriven', ['ngResource', 'ngRoute', 'ui.bootstrap', 'ui.date', 'ngFacebook', 'angular-rickshaw'])
   .config(function ($facebookProvider) {
     $facebookProvider.setAppId('300970376756350');
+    $facebookProvider.setPermissions("email,user_actions.fitness");
   })
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
@@ -53,6 +54,7 @@ var DemoCtrl = function ($scope, $facebook, $document) {
       function(response) {
         $scope.welcomeMsg = "Welcome " + response.name;
         $scope.isLoggedIn = true;
+
       },
       function(err) {
         $scope.welcomeMsg = "Please log in";
@@ -101,6 +103,26 @@ var FbController = function ($scope, $facebook, $document) {
         $scope.welcomeMsg = "Welcome " + response.name;
         console.log($scope.welcomeMsg);
         $scope.isLoggedIn = true;
+
+        $facebook.api('/v2.1/me/fitness.runs').then(
+            function(response) {
+                $scope.fitness = response;
+                var acts = response['data'];
+
+                var fbserie = [];
+                acts.forEach(function(act) {
+                  // console.log(act);
+
+                  fbserie.push({'x': (new Date(act['start_time']))/1000, 'y': parseFloat(act['data']['course']['title'])})
+                });
+                console.log(fbserie);
+
+            },
+            function(response) {
+                $scope.fitness = response.error;
+                console.log("nope-nope-nope" + response.error);
+            }
+        );
       },
       function(err) {
         $scope.welcomeMsg = "Please log in";
