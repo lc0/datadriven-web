@@ -66,7 +66,7 @@ var DemoCtrl = function ($scope, $facebook, $document) {
 
 var FbController = function ($scope, $facebook, $document) {
   $scope.options = {
-      renderer: 'line',
+      renderer: 'bar',
   };
   $scope.features = {
       palette: 'colorwheel',
@@ -80,14 +80,15 @@ var FbController = function ($scope, $facebook, $document) {
           }
       }
   };
-  $scope.series = [{
-          name: 'facebook data stream 1',
-          data: [{x: 0, y: 230}, {x: 1, y: 1500}, {x: 2, y: 790}, {x: 3, y: 310}, {x: 4, y: 600}]
-      },
-      {
-          name: 'facebook data stream 2',
-          data: [{x: 0, y: 300}, {x: 1, y: 2000}, {x: 2, y: 640}, {x: 3, y: 500}, {x: 4, y: 150}]
-      }
+  $scope.series = [
+  //     {
+  //         name: 'facebook data stream 1',
+  //         data: [{x: 0, y: 230}, {x: 1, y: 1500}, {x: 2, y: 790}, {x: 3, y: 310}, {x: 4, y: 600}]
+  //     },
+  //     {
+  //         name: 'facebook data stream 2',
+  //         data: [{x: 0, y: 300}, {x: 1, y: 2000}, {x: 2, y: 640}, {x: 3, y: 500}, {x: 4, y: 150}]
+  //     }
       ];
 
   $scope.isLoggedIn = false;
@@ -106,7 +107,7 @@ var FbController = function ($scope, $facebook, $document) {
 
         $facebook.api('/v2.1/me/fitness.runs').then(
             function(response) {
-                $scope.fitness = response;
+                var fitness = response;
                 var acts = response['data'];
 
                 var fbserie = [];
@@ -115,7 +116,14 @@ var FbController = function ($scope, $facebook, $document) {
 
                   fbserie.push({'x': (new Date(act['start_time']))/1000, 'y': parseFloat(act['data']['course']['title'])})
                 });
-                console.log(fbserie);
+                var sortedSeries = _.sortBy(fbserie, function(act) {console.log(act); return act.x});
+                // console.log(fbserie);
+                var seriesList = [];
+                seriesList.push({name:'facebook fitness', 'data': sortedSeries});
+
+                // console.log("here", $scope.series);
+                $scope.series = seriesList;
+                graph.render();
 
             },
             function(response) {
