@@ -45,11 +45,11 @@ var DemoCtrl = function ($scope, $facebook, $document) {
   $scope.isLoggedIn = false;
   $scope.login = function() {
     $facebook.login().then(function() {
-      refresh();
+      refreshDemo();
     });
   }
 
-  function refresh() {
+  function refreshDemo() {
     $facebook.api("/me").then(
       function(response) {
         $scope.welcomeMsg = "Welcome " + response.name;
@@ -61,7 +61,7 @@ var DemoCtrl = function ($scope, $facebook, $document) {
       });
   }
 
-  refresh();
+  refreshDemo();
 };
 
 var FbController = function ($scope, $facebook, $document, $routeParams) {
@@ -81,14 +81,18 @@ var FbController = function ($scope, $facebook, $document, $routeParams) {
       }
   };
   $scope.series = [
-  //     {
-  //         name: 'facebook data stream 1',
-  //         data: [{x: 0, y: 230}, {x: 1, y: 1500}, {x: 2, y: 790}, {x: 3, y: 310}, {x: 4, y: 600}]
-  //     },
-  //     {
-  //         name: 'facebook data stream 2',
-  //         data: [{x: 0, y: 300}, {x: 1, y: 2000}, {x: 2, y: 640}, {x: 3, y: 500}, {x: 4, y: 150}]
-  //     }
+      {
+          name: 'loading..',
+          data: [{x: 0, y: 0}]
+      },
+      // {
+      //     name: 'facebook data stream 1',
+      //     data: [{x: 0, y: 230}, {x: 1, y: 1500}, {x: 2, y: 790}, {x: 3, y: 310}, {x: 4, y: 600}]
+      // },
+      // {
+      //     name: 'facebook data stream 2',
+      //     data: [{x: 0, y: 300}, {x: 1, y: 2000}, {x: 2, y: 640}, {x: 3, y: 500}, {x: 4, y: 150}]
+      // }
       ];
 
   $scope.isLoggedIn = false;
@@ -102,7 +106,7 @@ var FbController = function ($scope, $facebook, $document, $routeParams) {
     $facebook.api("/me").then(
       function(response) {
         $scope.welcomeMsg = "Welcome " + response.name;
-        console.log($scope.welcomeMsg);
+        // console.log($scope.welcomeMsg);
         $scope.isLoggedIn = true;
 
         $facebook.api('/v2.1/me/fitness.' + $routeParams['type']).then(
@@ -116,7 +120,7 @@ var FbController = function ($scope, $facebook, $document, $routeParams) {
 
                   fbserie.push({'x': (new Date(act['start_time']))/1000, 'y': parseFloat(act['data']['course']['title'])})
                 });
-                var sortedSeries = _.sortBy(fbserie, function(act) {console.log(act); return act.x});
+                var sortedSeries = _.sortBy(fbserie, function(act) {return act.x});
                 // console.log(fbserie);
                 var seriesList = [];
                 seriesList.push({name:'facebook fitness: ' + $routeParams['type'], 'data': sortedSeries});
@@ -128,7 +132,7 @@ var FbController = function ($scope, $facebook, $document, $routeParams) {
             },
             function(response) {
                 $scope.fitness = response.error;
-                console.log("nope-nope-nope" + response.error);
+                //console.log("nope-nope-nope" + response.error);
             }
         );
       },
@@ -141,6 +145,28 @@ var FbController = function ($scope, $facebook, $document, $routeParams) {
 };
 
 var GithubController = function ($scope) {
+  $scope.options = {
+      renderer: 'line'
+  };
+  $scope.features = {
+      palette: 'colorwheel',
+      legend: {
+          toggle: true,
+          highlight: true
+      },
+      hover: {
+          yFormatter: function(y) {
+              return y;
+          }
+      }
+  };
+  $scope.series = [{
+          name: 'Github data',
+          data: Githubdata
+      }];
+};
+
+var JointController = function ($scope) {
   $scope.options = {
       renderer: 'line'
   };
