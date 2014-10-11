@@ -38,15 +38,15 @@
    </div>
    <!-- /.container -->
   </nav>
-  <div class="container">
+  <div class="container" ng-controller="FbController">
       <h4>
           {{welcomeMsg}}
       </h4>
       <button type="button" ng-click="login()" ng-hide="isLoggedIn" class="btn btn-default navbar-btn">
           Login
       </button>
-
-      <div class="container" ng-view></div>
+  </div>
+  <div class="container" ng-view>
   </div>
 
    <div class="container" id="chart_container">
@@ -109,7 +109,6 @@ var graph = new Rickshaw.Graph( {
   renderer: 'line',
   dataURL: '/github.json',
   series: [
-    //*
     {
       color: "#c05020",
       data: seriesData[0],
@@ -123,13 +122,6 @@ var graph = new Rickshaw.Graph( {
       data: seriesData[2],
       name: 'satisfactions'
     },
-    /*
-    {
-      color: "#ff60c0",
-      data: aggregated,
-      name: 'github'
-    }
-    //*/
   ]
 } );
 

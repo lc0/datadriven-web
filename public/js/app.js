@@ -64,7 +64,7 @@ var DemoCtrl = function ($scope, $facebook, $document) {
 
 var FbController = function ($scope, $facebook, $document) {
   $scope.options = {
-      renderer: 'line'
+      renderer: 'line',
   };
   $scope.features = {
       palette: 'colorwheel',
@@ -99,6 +99,7 @@ var FbController = function ($scope, $facebook, $document) {
     $facebook.api("/me").then(
       function(response) {
         $scope.welcomeMsg = "Welcome " + response.name;
+        console.log($scope.welcomeMsg);
         $scope.isLoggedIn = true;
       },
       function(err) {
