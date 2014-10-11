@@ -64,7 +64,7 @@ var DemoCtrl = function ($scope, $facebook, $document) {
   refresh();
 };
 
-var FbController = function ($scope, $facebook, $document) {
+var FbController = function ($scope, $facebook, $document, $routeParams) {
   $scope.options = {
       renderer: 'bar',
   };
@@ -105,7 +105,7 @@ var FbController = function ($scope, $facebook, $document) {
         console.log($scope.welcomeMsg);
         $scope.isLoggedIn = true;
 
-        $facebook.api('/v2.1/me/fitness.runs').then(
+        $facebook.api('/v2.1/me/fitness.' + $routeParams['type']).then(
             function(response) {
                 var fitness = response;
                 var acts = response['data'];
@@ -119,7 +119,7 @@ var FbController = function ($scope, $facebook, $document) {
                 var sortedSeries = _.sortBy(fbserie, function(act) {console.log(act); return act.x});
                 // console.log(fbserie);
                 var seriesList = [];
-                seriesList.push({name:'facebook fitness', 'data': sortedSeries});
+                seriesList.push({name:'facebook fitness: ' + $routeParams['type'], 'data': sortedSeries});
 
                 // console.log("here", $scope.series);
                 $scope.series = seriesList;
