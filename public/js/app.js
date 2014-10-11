@@ -6,7 +6,7 @@ angular.module('datadriven', ['ngResource', 'ngRoute', 'ui.bootstrap', 'ui.date'
   })
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
-      .when('/fb/:type', {
+      .when('/github', {
         templateUrl: 'views/home/github.html',
         controller: 'GithubController'})
       .when('/fb/:type', {
@@ -106,7 +106,7 @@ var FbController = function ($scope, $facebook, $document) {
       });
   }
 
-  //refresh();
+  refresh();
 };
 
 var GithubController = function ($scope) {
@@ -118,6 +118,11 @@ var GithubController = function ($scope) {
       legend: {
           toggle: true,
           highlight: true
+      },
+      hover: {
+          yFormatter: function(y) {
+              return y;
+          }
       }
   };
   $scope.series = [{
