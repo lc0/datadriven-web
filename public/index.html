@@ -51,14 +51,13 @@
   <div class="container" ng-view>
   </div>
 
-   <div class="container" id="chart_container">
-        <div id="chart"></div>
-        <div id="legend_container">
-          <div id="smoother" title="Smoothing"></div>
-          <div id="legend"></div>
-        </div>
-        <div id="slider"></div>
-    </div>
+  <div class="container" ng-controller="JointController" id="chart_container">
+    <rickshaw
+        rickshaw-options="options"
+        rickshaw-features="features"
+        rickshaw-series="series">
+    </rickshaw>
+  </div>
 
 
   <script src="lib/jquery/dist/jquery.js"></script>
@@ -78,81 +77,6 @@
   <script src="js/github.js"></script>
   <script src="js/app.js"></script>
   <script src="js/home/home-controller.js"></script>
-
-
-
-<script>
-
-// set up our data series with 50 random data points
-
-var seriesData = [ [], [], [] ];
-var random = new Rickshaw.Fixtures.RandomData(150);
-
-for (var i = 0; i < 150; i++) {
-  random.addData(seriesData);
-}
-
-// instantiate our graph!
-//aggregtion on d3 side
-//*
-var aggregated = d3.nest()
-                   .key(function(d) { return new Date(d.x*1000).getMonth(); })
-                   .rollup(function(d) { return d3.sum(d, function(e) { return +e.y; }); })
-                   .entries(Githubdata)
-                   .map(function(d) { return {x: +d.key, y: d.values}; });
-//*/
-
-var graph = new Rickshaw.Graph( {
-  element: document.getElementById("chart"),
-  width: 960,
-  height: 500,
-  renderer: 'line',
-  dataURL: '/github.json',
-  series: [
-    {
-      color: "#c05020",
-      data: seriesData[0],
-      name: 'fitness activity'
-    }, {
-      color: "#30c020",
-      data: seriesData[1],
-      name: 'work performance'
-    }, {
-      color: "#6060c0",
-      data: seriesData[2],
-      name: 'satisfactions'
-    },
-  ]
-} );
-
-graph.render();
-
-
-var hoverDetail = new Rickshaw.Graph.HoverDetail( {
-  graph: graph
-} );
-
-var legend = new Rickshaw.Graph.Legend( {
-  graph: graph,
-  element: document.getElementById('legend')
-
-} );
-
-var shelving = new Rickshaw.Graph.Behavior.Series.Toggle( {
-  graph: graph,
-  legend: legend
-} );
-
-var axes = new Rickshaw.Graph.Axis.Time( {
-  graph: graph
-} );
-axes.render();
-
-// even more shiity code
-document.getElementsByClassName("label")[1].click()
-document.getElementsByClassName("label")[2].click()
-
-</script>
 
 
 </body>

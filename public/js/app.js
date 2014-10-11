@@ -67,6 +67,7 @@ var DemoCtrl = function ($scope, $facebook, $document) {
 var FbController = function ($scope, $facebook, $document, $routeParams) {
   $scope.options = {
       renderer: 'bar',
+      width: 1140
   };
   $scope.features = {
       palette: 'colorwheel',
@@ -146,7 +147,8 @@ var FbController = function ($scope, $facebook, $document, $routeParams) {
 
 var GithubController = function ($scope) {
   $scope.options = {
-      renderer: 'line'
+      renderer: 'line',
+      width: 1140
   };
   $scope.features = {
       palette: 'colorwheel',
@@ -168,7 +170,8 @@ var GithubController = function ($scope) {
 
 var JointController = function ($scope) {
   $scope.options = {
-      renderer: 'line'
+      renderer: 'line',
+      height: 450
   };
   $scope.features = {
       palette: 'colorwheel',
@@ -182,8 +185,25 @@ var JointController = function ($scope) {
           }
       }
   };
-  $scope.series = [{
-          name: 'Github data',
-          data: Githubdata
-      }];
+  var seriesData = [ [], [], [] ];
+  var random = new Rickshaw.Fixtures.RandomData(150);
+
+  for (var i = 0; i < 150; i++) {
+    random.addData(seriesData);
+  }
+  $scope.series = [
+    {
+      color: "#c05020",
+      data: seriesData[0],
+      name: 'fitness activity'
+    }, {
+      color: "#30c020",
+      data: seriesData[1],
+      name: 'work performance'
+    }, {
+      color: "#6060c0",
+      data: seriesData[2],
+      name: 'satisfactions'
+    },
+  ];
 };
