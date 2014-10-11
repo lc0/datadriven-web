@@ -19,6 +19,21 @@ angular.module('datadriven', ['ngResource', 'ngRoute', 'ui.bootstrap', 'ui.date'
       )
       .otherwise({redirectTo: '/'});
   }])
+  .factory('mySharedService', function($rootScope) {
+      var sharedService = {};
+      sharedService.message = '';
+
+      sharedService.prepForBroadcast = function(msg) {
+          this.message = msg;
+          this.broadcastItem();
+      };
+
+      sharedService.broadcastItem = function() {
+          $rootScope.$broadcast('handleBroadcast');
+      };
+
+      return sharedService;
+  })
 
   .run(function ($rootScope) {
       // Load the facebook SDK asynchronously
@@ -143,9 +158,14 @@ var FbController = function ($scope, $facebook, $document, $routeParams) {
   }
 
   refresh();
+
+  $scope.handleClick = function() {
+    sharedService.prepForBroadcast($scope.series[0]);
+  };
+
 };
 
-var GithubController = function ($scope) {
+var GithubController = function ($scope, sharedService) {
   $scope.options = {
       renderer: 'line',
       width: 1140
@@ -167,15 +187,12 @@ var GithubController = function ($scope) {
       data: Githubdata
   }];
 
-  $scope.add = function() {
-    $scope.series = [{
-        name: 'empty..',
-        data: [{x: 0, y: 0}]
-    }];
+  $scope.handleClick = function() {
+    sharedService.prepForBroadcast($scope.series);
   };
 };
 
-var JointController = function ($scope) {
+var JointController = function ($scope, sharedService) {
   $scope.options = {
       renderer: 'line',
       height: 450
@@ -221,4 +238,14 @@ var JointController = function ($scope) {
       }];
   };
 
+  $scope.$on('handleBroadcast', function() {
+    //TODO: failing right now only because of data inconsistency
+    //$scope.series.push(sharedService.message[0]);
+    $scope.series = sharedService.message;
+  });
+
 };
+
+JointController.$inject = ['$scope', 'mySharedService'];
+GithubController.$inject = ['$scope', 'mySharedService'];
+//FbController.$inject = ['$scope', 'mySharedService'];
