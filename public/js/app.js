@@ -128,7 +128,7 @@ var FbController = function ($scope, $facebook, $document, $routeParams) {
 
                 // console.log("here", $scope.series);
                 $scope.series = seriesList;
-                graph.render();
+                // graph.render();
 
             },
             function(response) {
@@ -163,9 +163,16 @@ var GithubController = function ($scope) {
       }
   };
   $scope.series = [{
-          name: 'Github data',
-          data: Githubdata
-      }];
+      name: 'Github data',
+      data: Githubdata
+  }];
+
+  $scope.add = function() {
+    $scope.series = [{
+        name: 'empty..',
+        data: [{x: 0, y: 0}]
+    }];
+  };
 };
 
 var JointController = function ($scope) {
