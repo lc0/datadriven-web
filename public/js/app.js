@@ -1,18 +1,22 @@
+'use strict';
 // Declare app level module which depends on filters, and services
 angular.module('datadriven', ['ngResource', 'ngRoute', 'ui.bootstrap', 'ui.date', 'ngFacebook'])
-  .config( function( $facebookProvider ) {
-      $facebookProvider.setAppId('300970376756350');
-    })
+  .config(function ($facebookProvider) {
+    $facebookProvider.setAppId('300970376756350');
+  })
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
+      .when('/fb/:type', {
+        templateUrl: 'views/home/fb.html',
+        controller: 'FbController'})
       .when('/', {
         templateUrl: 'views/home/home.html',
-        controller: 'HomeController'})
-
+        controller: 'DemoCtrl'}
+      )
       .otherwise({redirectTo: '/'});
   }])
 
-  .run( function( $rootScope ) {
+  .run(function ($rootScope) {
       // Load the facebook SDK asynchronously
       (function(){
          // If we've already installed the SDK, we're done
@@ -33,13 +37,14 @@ angular.module('datadriven', ['ngResource', 'ngRoute', 'ui.bootstrap', 'ui.date'
        }());
     });
 
-var DemoCtrl = function ($scope, $facebook) {
+var DemoCtrl = function ($scope, $facebook, $document) {
   $scope.isLoggedIn = false;
   $scope.login = function() {
     $facebook.login().then(function() {
       refresh();
     });
   }
+
   function refresh() {
     $facebook.api("/me").then(
       function(response) {
@@ -52,4 +57,27 @@ var DemoCtrl = function ($scope, $facebook) {
   }
 
   refresh();
+};
+
+var FbController = function ($scope, $facebook, $document) {
+  $scope.isLoggedIn = false;
+  $scope.login = function() {
+    $facebook.login().then(function() {
+      refresh();
+    });
+  }
+
+  function refresh() {
+    $facebook.api("/me").then(
+      function(response) {
+        $scope.welcomeMsg = "Welcome " + response.name;
+        $scope.isLoggedIn = true;
+      },
+      function(err) {
+        $scope.welcomeMsg = "Please log in";
+      });
+  }
+
+  //refresh();
+  console.log('whaaazaaaap');
 };
