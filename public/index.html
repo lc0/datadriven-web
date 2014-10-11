@@ -67,6 +67,7 @@
   <script src="lib/rickshaw/rickshaw.js"></script>
   <script src="lib/ng-facebook/ngFacebook.js"></script>
 
+  <script src="js/github.js"></script>
   <script src="js/app.js"></script>
   <script src="js/home/home-controller.js"></script>
 
@@ -84,14 +85,23 @@ for (var i = 0; i < 150; i++) {
 }
 
 // instantiate our graph!
+//aggregtion on d3 side
+//*
+var aggregated = d3.nest()
+                   .key(function(d) { console.log(new Date(d.x*1000).getMonth()); return new Date(d.x*1000).getMonth(); })
+                   .rollup(function(d) { return d3.sum(d, function(e) { return +e.y; }); })
+                   .entries(Githubdata)
+                   .map(function(d) { return {x: +d.key, y: d.values}; });
+//*/
 
 var graph = new Rickshaw.Graph( {
   element: document.getElementById("chart"),
   width: 960,
   height: 500,
   renderer: 'line',
+  dataURL: '/github.json',
   series: [
-    {
+    /*{
       color: "#c05020",
       data: seriesData[0],
       name: 'New York'
@@ -103,9 +113,15 @@ var graph = new Rickshaw.Graph( {
       color: "#6060c0",
       data: seriesData[2],
       name: 'Tokyo'
+    },*/{
+      color: "#ff60c0",
+      data: aggregated,
+      name: 'github'
     }
   ]
 } );
+
+console.log(seriesData[2]);
 
 graph.render();
 
