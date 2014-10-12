@@ -166,6 +166,7 @@ var FbController = function ($scope, $facebook, $document, $routeParams) {
 };
 
 var GithubController = function ($scope, sharedService) {
+  $scope.isLoggedIn = true;
   $scope.options = {
       renderer: 'line',
       width: 1140
