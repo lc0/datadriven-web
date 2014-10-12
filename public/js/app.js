@@ -240,7 +240,14 @@ var JointController = function ($scope, sharedService) {
 
   $scope.$on('handleBroadcast', function() {
     //TODO: failing right now only because of data inconsistency
-    //$scope.series.push(sharedService.message[0]);
+    // $scope.series.push(sharedService.message[0]);
+
+    // another debug stage
+    // $scope.series.push({
+    //   color: "#6060ff",
+    //   data: seriesData[2],
+    //   name: 'bullshit'
+    // });
     $scope.series = sharedService.message;
   });
 

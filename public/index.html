@@ -48,8 +48,7 @@
           Login
       </button>
   </div>
-  <div class="container" ng-view>
-  </div>
+  <div class="container" ng-hide="!isLoggedIn" ng-view></div>
 
   <div class="container" ng-controller="JointController" id="chart_container">
     <rickshaw
