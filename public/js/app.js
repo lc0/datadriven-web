@@ -1,9 +1,13 @@
 'use strict';
 // Declare app level module which depends on filters, and services
-angular.module('datadriven', ['ngResource', 'ngRoute', 'ui.bootstrap', 'ui.date', 'ngFacebook', 'angular-rickshaw'])
+angular.module('datadriven', ['ngResource', 'ngRoute', 'ui.bootstrap', 'ui.date', 'ngFacebook', 'angular-rickshaw', 'angulartics', 'angulartics.google.analytics'])
   .config(function ($facebookProvider) {
     $facebookProvider.setAppId('300970376756350');
     $facebookProvider.setPermissions("email,user_actions.fitness");
+
+    ga('create', 'UA-45639326-1', 'auto');
+    ga('send', 'pageview');
+
   })
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
@@ -244,11 +248,11 @@ var JointController = function ($scope, sharedService) {
     // $scope.series.push(sharedService.message[0]);
 
     // another debug stage
-    // $scope.series.push({
-    //   color: "#6060ff",
-    //   data: seriesData[2],
-    //   name: 'bullshit'
-    // });
+    $scope.series.push({
+      color: "#6060ff",
+      data: [{'x':1, 'y':2}],
+      name: 'bullshit'
+    });
     $scope.series = sharedService.message;
   });
 
