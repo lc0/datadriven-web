@@ -85,7 +85,7 @@ var DemoCtrl = function ($scope, $facebook, $document) {
 
 var FbController = function ($scope, $facebook, $document, $routeParams) {
   $scope.options = {
-      renderer: 'area',
+      renderer: 'scatterplot',
       width: 1140
   };
   $scope.features = {
@@ -107,7 +107,7 @@ var FbController = function ($scope, $facebook, $document, $routeParams) {
       },
       // {
       //     name: 'facebook data stream 1',
-      //     data: [{x: 0, y: 230}, {x: 1, y: 1500}, {x: 2, y: 790}, {x: 3, y: 310}, {x: 4, y: 600}]
+      //     data: [{x: 0, y: 4.7}, {x: 1, y: 4.7}, {x: 2, y: 5}, {x: 3, y: 5.2}, {x: 100, y: 4/7}]
       // },
       // {
       //     name: 'facebook data stream 2',
