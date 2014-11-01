@@ -85,7 +85,7 @@ var DemoCtrl = function ($scope, $facebook, $document) {
 
 var FbController = function ($scope, $facebook, $document, $routeParams) {
   $scope.options = {
-      renderer: 'bar',
+      renderer: 'area',
       width: 1140
   };
   $scope.features = {
@@ -141,7 +141,7 @@ var FbController = function ($scope, $facebook, $document, $routeParams) {
                   fbserie.push({'x': (new Date(act['start_time']))/1000, 'y': parseFloat(act['data']['course']['title'])})
                 });
                 var sortedSeries = _.sortBy(fbserie, function(act) {return act.x});
-                // console.log(fbserie);
+                console.log(sortedSeries);
                 var seriesList = [];
                 seriesList.push({name:'facebook fitness: ' + $routeParams['type'], 'data': sortedSeries});
 
